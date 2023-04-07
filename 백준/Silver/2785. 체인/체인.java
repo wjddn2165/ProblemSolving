@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -14,43 +11,25 @@ public class Main {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        List<Long> list = new LinkedList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
 
         for (int i = 0; i < N; i++) {
-            list.add(Long.parseLong(st.nextToken()));
+            pq.add(Integer.parseInt(st.nextToken()));
         }
 
-        list.sort(null);
-
-        Deque<Long> queue = new LinkedList<>(list);
-
+        int minChain = pq.remove();
         int count = 0;
 
-        while (queue.size() != 1) {
-            long minChain = queue.removeFirst();
+        while (N > 1) {
+            if (minChain == 1) {
+                minChain = pq.remove();
+                N -= 2;
+            } else {
+                minChain--;
+                N -= 1;
+            }
 
             count++;
-
-            if (minChain > 1) {
-
-                // 가장 작은 체인에서 체인을 한 개 분리
-                minChain--;
-                queue.offerFirst(minChain);
-
-                // 가장 큰 체인 두개를 합침
-                long last = queue.removeLast() + queue.removeLast();
-                queue.offerLast(last + 1);
-            } else {
-                // 가장 작은 체인이 1개 짜리 체인인데, 남은 체인이 하나만 있다면 바로 종료
-                if (queue.size() == 1) {
-                    System.out.println(count);
-                    return;
-                }
-
-                // 가장 큰 체인 두개를 합침
-                long last = queue.removeLast() + queue.removeLast();
-                queue.offerLast(last + 1);
-            }
         }
 
         System.out.println(count);
