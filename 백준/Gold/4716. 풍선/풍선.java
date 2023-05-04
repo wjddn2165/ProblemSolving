@@ -16,7 +16,7 @@ public class Main {
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
 
-            if (N == 0 && A == 0 && B == 0) {
+            if (N == 0) {
                 break;
             }
 
