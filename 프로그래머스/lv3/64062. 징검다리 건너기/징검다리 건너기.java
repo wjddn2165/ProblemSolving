@@ -1,27 +1,39 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] stones, int k) {
-        int answer = Integer.MAX_VALUE;
+    
+    // n명이 다리를 건널 수 없으면 true 반환
+    boolean decide(int n, int k, int[] stones) {
         
-        Deque<int[]> queue = new ArrayDeque<>();
+        int count = 0;
         
         for(int i=0;i<stones.length;i++) {
-            while(!queue.isEmpty() && queue.peekLast()[0] < stones[i]) {
-                queue.removeLast();
+            if(stones[i] - n <= 0) {
+                count ++;
+            } else {
+                count = 0;
             }
             
-            queue.offer(new int[]{stones[i], i});
+            if(count == k) return true;
+        }
+        
+        return false;
+    }
+    
+    public int solution(int[] stones, int k) {
+        int lo = 1;
+        int hi = 2000000000;
+        
+        while(lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
             
-            if(queue.peek()[1] < i - k + 1) {
-                queue.removeFirst();
-            }
-            
-            if(i >= k - 1) {
-                answer = Math.min(answer, queue.peek()[0]);
+            if(decide(mid, k, stones)) {
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
             }
         }
-
-        return answer;
+        
+        return lo;
     }
 }
