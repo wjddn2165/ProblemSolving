@@ -5,6 +5,7 @@ class Solution {
     int[] parent;
     String[] board;
 
+    // 2차원 배열을 1차원으로 풀이하기 위한 좌표 변환 함수
     int transform(int r, int c) {
         return (r - 1) * 50 + c;
     }
@@ -23,7 +24,8 @@ class Solution {
 
         if (rootA == rootB) return;
 
-        // r1, c1의 대표 셀값이 빈 셀일 경우, r2, c2 를 대표 값으로 설정
+        // r1, c1의 대표 셀값이 빈 셀일 경우, r2, c2 를 대표값으로 설정
+        // 그 외 나머지 경우는 r1, c1 을 대표값으로 설정
         if (board[rootA] == null) {
             parent[rootA] = parent[rootB];
         } else {
@@ -87,16 +89,13 @@ class Solution {
                 int root = find(idx);
                 String rootValue = board[root];
                 
-                boolean[] flag = new boolean[2501];
-
+                // 처음에는 unmerge 시 find(j) == root 인 모든 셀에 대해서 부모를 자기 자신으로 초기화 했지만, 이렇게 풀게되면 다른 노드가 루트로 가는 과정에서 중간 연결 다리가 끊어질 수 있음. 따라서 root(j) == root 인 셀을 미리 다 표시해 두었다가 한번에 업데이트 해주었음.
                 for(int j=1;j<parent.length;j++) {
-                    if(find(j) == root) {
-                        flag[j] = true;
-                    }
+                    find(j);
                 }
                 
                 for(int j=1;j<parent.length;j++) {
-                    if(flag[j]) {
+                    if(find(j) == root) {
                         parent[j] = j;
                         board[j] = null;
                     }
