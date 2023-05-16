@@ -86,10 +86,10 @@ class Node implements Comparable<Node> {
     
     @Override
     public int compareTo(Node o) {
-        if(intensity == o.intensity) {
-            return num - o.num;
-        } else {
+        // if(intensity == o.intensity) {
+        //     return num - o.num;
+        // } else {
             return intensity - o.intensity;
-        }
+        // }
     }
 }
