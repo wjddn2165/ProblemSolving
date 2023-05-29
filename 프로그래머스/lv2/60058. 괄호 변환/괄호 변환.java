@@ -25,6 +25,21 @@ class Solution {
             }
         }
         
+        if(isCorrect(u)) {
+            return u + dfs(v);
+        }
+        
+        String newU = "";
+        
+        for(int i=1;i<u.length() - 1;i++) {
+            if(u.charAt(i) == '(') newU += ")";
+            else newU += "(";
+        }
+        
+        return "(" + dfs(v) + ")" + newU;
+    }
+    
+    boolean isCorrect(String u) {
         Stack<Character> stack = new Stack<>();
         
         for(int i=0;i<u.length();i++) {
@@ -34,23 +49,10 @@ class Solution {
             else if(!stack.isEmpty() && stack.peek() != next) {
                 stack.pop();
             } else {
-                stack.push(next);
-                break;
+                return false;
             };
         }
         
-        if(stack.isEmpty()) {
-            return u + dfs(v);
-        }
-        
-        String temp = u.substring(1, u.length() - 1);
-        String newU = "";
-        
-        for(int i=0;i<temp.length();i++) {
-            if(temp.charAt(i) == '(') newU += ")";
-            else newU += "(";
-        }
-        
-        return "(" + dfs(v) + ")" + newU;
+        return stack.isEmpty();
     }
 }
