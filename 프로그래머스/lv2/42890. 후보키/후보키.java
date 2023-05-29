@@ -2,55 +2,44 @@ import java.util.*;
 
 class Solution {
     
-    List<List<Integer>> keys = new ArrayList<>();
+    List<Integer> keys = new ArrayList<>();
     
     public int solution(String[][] relation) {
-        dfs(relation, new ArrayList<>(), 0);
+        int row = relation.length;
+        int col = relation[0].length;
         
-        int answer = keys.size();
+        int answer = 0;
         
-        for(int i=0;i<keys.size();i++) {
-            for(int j=0;j<keys.size();j++) {
-                if(i!=j) {
-                    if(keys.get(i).containsAll(keys.get(j))) {
-                        answer--;
-                        break;
-                    }
-                }
+        for(int i=1;i<(1 << col);i++) {
+            if(isKey(relation, i) && isMin(i)) {
+                keys.add(i);
+                // System.out.println(Integer.toString(i, 2));
             }
         }
         
-        return answer;
+        return keys.size();
     }
     
-    void dfs(String[][] relation, List<Integer> columns, int depth) {
-        if(isKey(relation, columns)) {
-            keys.add(new ArrayList<>(columns));
-            return;
+    boolean isMin(int key) {
+        for(int i=0;i<keys.size();i++) {
+            if((keys.get(i) & key) == keys.get(i)) return false;
         }
-            
-        for(int i=depth;i<relation[0].length;i++) {
-            columns.add(i);
-            dfs(relation, columns, i + 1);
-            columns.remove(columns.size() - 1);
-        }
+        return true;
     }
     
-    boolean isKey(String[][] relation, List<Integer> columns) {
+    boolean isKey(String[][] relation, int key) {
+        int row = relation.length;
+        int col = relation[0].length;
         
-        // StringBuilder sb = new StringBuilder();
-        // for(int i=0;i<columns.size();i++) {
-        //     sb.append(columns.get(i)).append(" ");
-        // }
-        // System.out.println(sb);
-        if(columns.size() == 0) return false;
-        
-        for(int i=0;i<relation.length - 1;i++) {
-            for(int j=i+1;j<relation.length;j++) {
+        for(int i=0;i<row;i++) {
+            for(int j=i+1;j<row;j++) {
                 boolean equal = true;
                 
-                for(int column : columns) {
-                    equal = equal && relation[i][column].equals(relation[j][column]);
+                for(int k=0;k<col;k++) {
+                    
+                    if((key & (1 << k)) > 0) {
+                        equal = equal && relation[i][k].equals(relation[j][k]);
+                    }
                 }
                 
                 if(equal) return false;
