@@ -1,65 +1,31 @@
-import java.util.*;
-
 class Solution {
     public int solution(String s) {
         int answer = Integer.MAX_VALUE;
         
-        if(s.length() == 1) {
-            return s.length();
-        }
+        if(s.length() == 1) return 1;
         
-        for(int i=1;i<=s.length() / 2;i++) {
-            answer = Math.min(answer, compress(s, i));
+        for(int i=1;i<=s.length()/2;i++) {
+            answer = Math.min(answer, dfs(s, i, 1).length());
         }
         
         return answer;
     }
     
-    int compress(String str, int unit) {
-        List<String> subString = new ArrayList<>();
+    String dfs(String str, int n, int repeat) {
+        if(str.length() < n) return str;
         
-        int size = str.length();
+        String result = "";
+        String pre = str.substring(0, n);
+        String post = str.substring(n);
         
-        for(int i=0;i<size;i+=unit) {
-            if(i + unit - 1 < size)
-                subString.add(str.substring(i, i + unit));
-            else
-                subString.add(str.substring(i));
-        }
-        
-        Stack<Node> stack = new Stack<>();
-        
-        for(int i=0;i<subString.size();i++) {
-            if(!stack.isEmpty() && stack.peek().str.equals(subString.get(i))) {
-                Node top = stack.pop();
-                top.count += 1;
-                stack.push(top);
+        if(!post.startsWith(pre)) {
+            if(repeat == 1) {
+                return result += pre + dfs(post, n, 1);
             } else {
-                stack.push(new Node(subString.get(i)));
+                return result += repeat + pre + dfs(post, n, 1);
             }
         }
         
-        int sum = 0;
-        
-        for(int i=0;i<stack.size();i++) {
-            Node cur = stack.get(i);
-            sum += cur.str.length();
-            
-            if(cur.count == 1) continue;
-            
-            sum += String.valueOf(cur.count).length();
-        }
-        
-        return sum;
-    }
-}
-
-class Node {
-    String str;
-    int count;
-    
-    Node(String str) {
-        this.str = str;
-        count = 1;
+        return result += dfs(post, n, repeat + 1);
     }
 }
