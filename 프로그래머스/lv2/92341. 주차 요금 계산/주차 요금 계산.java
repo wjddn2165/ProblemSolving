@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        Map<String, Car> map = new HashMap<>();
+        Map<String, Car> map = new TreeMap<>();
         
         for(String record : records) {
             String[] s = record.split("\\s");
@@ -18,7 +18,8 @@ class Solution {
             }
         }
         
-        List<Car> cars = new ArrayList<>();
+        int[] answer = new int[map.size()];
+        int idx = 0;
         
         // 아직 출차를 안한 차들이 있다면 요금 계산
         for(Car car : map.values()) {
@@ -28,16 +29,8 @@ class Solution {
             
             // 모든 차 요금계산
             car.calc(fees);
-            cars.add(car);
-        }
-        
-        // 차량 번호로 정렬
-        cars.sort((o1, o2) -> o1.carNo.compareTo(o2.carNo));
-        
-        int[] answer = new int[cars.size()];
-        
-        for(int i=0;i<cars.size();i++) {
-            answer[i] = cars.get(i).fee;
+            
+            answer[idx++] = car.fee;
         }
         
         return answer;
