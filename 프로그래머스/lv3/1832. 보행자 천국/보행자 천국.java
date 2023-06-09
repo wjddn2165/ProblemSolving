@@ -1,8 +1,9 @@
 class Solution {
     int MOD = 20170805;
     int[][][] dp;
-    int[] dr = {-1, 0, 1, 0};
-    int[] dc = {0, 1, 0, -1};
+    // 오른쪽, 아래
+    int[] dr = {0, 1};
+    int[] dc = {1, 0};
     int m;
     int n;
     
@@ -10,17 +11,17 @@ class Solution {
         this.m = m;
         this.n = n;
         
-        dp = new int[m][n][4];
+        dp = new int[m][n][2];
         
         for(int i=0;i<m;i++) {
             for(int j=0;j<n;j++) {
-                for(int k=0;k<4;k++) {
+                for(int k=0;k<2;k++) {
                     dp[i][j][k] = -1;
                 }
             }
         }
         
-        return dfs(0, 0, 1, cityMap);
+        return dfs(0, 0, 0, cityMap);
     }
     
     int dfs(int r, int c, int dir, int[][] cityMap) {
@@ -39,8 +40,8 @@ class Solution {
         dp[r][c][dir] = 0;
         
         if(cityMap[r][c] == 0) {
-            dp[r][c][dir] += dfs(r, c + 1, 1, cityMap) % MOD;
-            dp[r][c][dir] += dfs(r + 1, c, 2, cityMap) % MOD;
+            dp[r][c][dir] += dfs(r, c + 1, 0, cityMap) % MOD;
+            dp[r][c][dir] += dfs(r + 1, c, 1, cityMap) % MOD;
         } else if(cityMap[r][c] == 2) {
             int nr = r + dr[dir];
             int nc = c + dc[dir];
