@@ -21,7 +21,7 @@ class Solution {
             }
         }
         
-        return dfs(0, 0, 0, cityMap);
+        return dfs(0, 0, 1, cityMap);
     }
     
     int dfs(int r, int c, int dir, int[][] cityMap) {
