@@ -58,37 +58,20 @@ class Solution {
     }
     
     int timeToInt(String time) {
-        String regExp = "(\\d\\d):(\\d\\d):(\\d\\d)";
-        Pattern pattern = Pattern.compile(regExp);
-        Matcher matcher = pattern.matcher(time);
-        
-        matcher.find();
-        
-        int hour = Integer.parseInt(matcher.group(1));
-        int min = Integer.parseInt(matcher.group(2));
-        int sec = Integer.parseInt(matcher.group(3));
+        String[] s = time.split(":");
+        int hour = Integer.parseInt(s[0]);
+        int min = Integer.parseInt(s[1]);
+        int sec = Integer.parseInt(s[2]);
         
         return hour * 3600 + min * 60 + sec;
     }
     
     String intToTime(int intTime) {
-        String hour = String.valueOf(intTime / 3600);
+        int hour = (intTime / 3600);
         intTime %= 3600;
-        String min = String.valueOf(intTime / 60);
-        String sec = String.valueOf(intTime % 60);
+        int min = (intTime / 60);
+        int sec = (intTime % 60);
         
-        if(hour.length() == 1) {
-            hour = "0" + hour;
-        }
-        
-        if(min.length() == 1) {
-            min = "0" + min;
-        }
-        
-        if(sec.length() == 1) {
-            sec = "0" + sec;
-        }
-        
-        return hour + ":" + min + ":" + sec;
+        return String.format("%02d:%02d:%02d", hour, min, sec);
     }
 }
