@@ -5,12 +5,15 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static final int INF = 1987654321;
+    static final int INF = 987654321;
+    static int N;
+    static int[][] cost;
+    static int[][] dp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int[][] cost = new int[N][N];
+        N = Integer.parseInt(br.readLine());
+        cost = new int[N][N];
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -19,38 +22,39 @@ public class Main {
             }
         }
 
-        // i번 째에서 j번 째 나라에 현재 거주 중인 상태 k는 순회한 나라 기록
-        int[][][] dp = new int[N][N][1 << N];
+        // i 번째 도시에서 현재 방문한 도시들 상태에서 다시 0번 도시로 돌아갈 때 드는 최소 비용
+        dp = new int[N][(1 << (N - 1))];
 
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                Arrays.fill(dp[i][j], INF);
+            Arrays.fill(dp[i], -1);
+        }
+
+        System.out.println(dfs(0, 0));
+    }
+
+    static int dfs(int cur, int visited) {
+        // 모든 도시 방문
+        if(visited == (1 << (N - 1)) - 1) {
+            if (cost[cur][0] == 0) {
+                return INF;
+            } else {
+                return cost[cur][0];
             }
         }
 
-        // 어느 도시에서 시작하나 최단 순회 경로는 동일하므로 0번 도시에서 시작
-        dp[0][0][1] = 0;
+        if (dp[cur][visited] != -1) {
+            return dp[cur][visited];
+        }
 
-        for (int i = 1; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                for (int k = 0; k < (1 << N); k++) {
-                    for (int l = 1; l < N; l++) {
-                        if(cost[j][l] != 0) {
-                            dp[i][l][k | (1 << l)] = Math.min(dp[i][l][k | (1 << l)], dp[i-1][j][k] + cost[j][l]);
-                        }
-                    }
-                }
+        dp[cur][visited] = INF;
+
+        // 현재 방문을 하지 않은 도시들에 대해 방문
+        for (int i = 0; i < N - 1; i++) {
+            if ((visited & (1 << i)) == 0 && cost[cur][i + 1] != 0) {
+                dp[cur][visited] = Math.min(dp[cur][visited], dfs(i + 1, visited | (1 << i)) + cost[cur][i + 1]);
             }
         }
 
-        int min = INF;
-
-        for (int i = 1; i < N; i++) {
-            if (cost[i][0] != 0) {
-                min = Math.min(min, dp[N-1][i][(1<<N) - 1] + cost[i][0]);
-            }
-        }
-
-        System.out.println(min);
+        return dp[cur][visited];
     }
 }
