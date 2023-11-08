@@ -20,16 +20,15 @@ public class Main {
             for (int j = 0; j <= maxW; j++) {
                 dp[i + 1][j] = dp[i + 1][j] || dp[i][j];
 
-                if (j - w[i] >= 0) {
-                    dp[i + 1][j] = dp[i + 1][j] || dp[i][j - w[i]];
+                int diff = Math.abs(j - w[i]);
+                int sum = j + w[i];
+
+                if (diff >= 0) {
+                    dp[i + 1][j] = dp[i + 1][j] || dp[i][diff];
                 }
 
-                if (j + w[i] <= maxW) {
-                    dp[i + 1][j] = dp[i + 1][j] || dp[i][j + w[i]];
-                }
-
-                if (w[i] - j >= 0) {
-                    dp[i + 1][j] = dp[i + 1][j] || dp[i][w[i] - j];
+                if (sum <= maxW) {
+                    dp[i + 1][j] = dp[i + 1][j] || dp[i][sum];
                 }
             }
         }
