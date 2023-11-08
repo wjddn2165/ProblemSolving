@@ -27,12 +27,15 @@ public class Main {
 
         for (int i = 1; i <= m; i++) {
             for (int j = i; j <= m; j++) {
-                int[] dp = new int[n + 1];
-                dp[0] = -987654321;
+                int sum = 0;
                 for (int k = 1; k <= n; k++) {
                     int next = matrix[k][j] - matrix[k][i-1];
-                    dp[k] = Math.max(dp[k-1] + next, next);
-                    max = Math.max(max, dp[k]);
+                    if (sum > 0) {
+                        sum += next;
+                    } else {
+                        sum = next;
+                    }
+                    max = Math.max(max, sum);
                 }
             }
         }
