@@ -8,53 +8,51 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         int[] crane = new int[N];
+        int[] cnt = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             crane[i] = Integer.parseInt(st.nextToken());
         }
+
         Arrays.sort(crane);
+
         int M = Integer.parseInt(br.readLine());
-        List<Integer> boxes = new ArrayList<>();
         st = new StringTokenizer(br.readLine());
+
+        int maxBoxSize = 0;
         for (int i = 0; i < M; i++) {
-            boxes.add(Integer.parseInt(st.nextToken()));
+            int box = Integer.parseInt(st.nextToken());
+            maxBoxSize = Math.max(box, maxBoxSize);
+            for (int j = 0; j < N; j++) {
+                if (box <= crane[j]) {
+                    cnt[j]++;
+                    break;
+                }
+            }
         }
-        boxes.sort(null);
 
         // 가장 무거운 무게를 옮기는 크레인의 최대 무게보다, 박스의 최대 무게가 더 큰 경우
-        if (crane[N - 1] < boxes.get(boxes.size() - 1)) {
+        if (maxBoxSize > crane[N - 1]) {
             System.out.println(-1);
             return;
         }
 
-        int count = 0;
-        while (!boxes.isEmpty()) {
-            count++;
-            for (int i = N - 1; i >= 0; i--) {
-                int maxBoxIdx = lowerBound(boxes, crane[i]);
-                if (maxBoxIdx == -1) {
-                    break;
+        for (int i = (M + N - 1) / M; i < M; i++) {
+            int temp = cnt[0];
+            for (int j = 0; j < N - 1; j++) {
+                if (temp > i) {
+                    temp = cnt[j + 1] + temp - i;
+                } else {
+                    temp = cnt[j + 1];
                 }
-                boxes.remove(maxBoxIdx);
+            }
+
+            if (temp <= i) {
+                System.out.println(i);
+                return;
             }
         }
 
-        System.out.println(count);
-    }
-
-    static int lowerBound(List<Integer> boxes, int k) {
-        int lo = 0;
-        int hi = boxes.size() - 1;
-        while (lo <= hi) {
-            int mid = (lo + hi) / 2;
-            if (boxes.get(mid) > k) {
-                hi = mid - 1;
-            } else if(boxes.get(mid) == k) {
-                return mid;
-            } else {
-                lo = mid + 1;
-            }
-        }
-        return hi;
+        System.out.println(M);
     }
 }
