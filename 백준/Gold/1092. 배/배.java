@@ -14,7 +14,7 @@ public class Main {
         }
         Arrays.sort(crane);
         int M = Integer.parseInt(br.readLine());
-        LinkedList<Integer> boxes = new LinkedList<>();
+        List<Integer> boxes = new ArrayList<>();
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
             boxes.add(Integer.parseInt(st.nextToken()));
@@ -22,7 +22,7 @@ public class Main {
         boxes.sort(null);
 
         // 가장 무거운 무게를 옮기는 크레인의 최대 무게보다, 박스의 최대 무게가 더 큰 경우
-        if (crane[N - 1] < boxes.getLast()) {
+        if (crane[N - 1] < boxes.get(boxes.size() - 1)) {
             System.out.println(-1);
             return;
         }
@@ -42,7 +42,7 @@ public class Main {
         System.out.println(count);
     }
 
-    static int lowerBound(LinkedList<Integer> boxes, int k) {
+    static int lowerBound(List<Integer> boxes, int k) {
         int lo = 0;
         int hi = boxes.size() - 1;
         while (lo <= hi) {
