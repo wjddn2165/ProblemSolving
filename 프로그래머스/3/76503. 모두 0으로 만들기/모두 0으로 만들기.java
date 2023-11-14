@@ -3,11 +3,11 @@ import java.util.*;
 class Solution {
     static long[] node;
     static List<List<Integer>> graph;
-    static long[] dp;
     static boolean[] visited;
     static long sum;
+    static long answer = 0;
+    
     public long solution(int[] a, int[][] edges) {
-        dp = new long[a.length];
         node = new long[a.length];
         graph = new ArrayList<>();
         visited = new boolean[a.length];
@@ -27,22 +27,19 @@ class Solution {
             graph.get(to).add(from);
         }
         
-        dfs(0);
-        
-        return dp[0];
+        dfs(0);        
+        return answer;
     }
     
-    long dfs(int cur) {
+    void dfs(int cur) {
         visited[cur] = true;
         List<Integer> child = graph.get(cur);
         for(int i=0;i<child.size();i++) {
-            if(visited[child.get(i)]) continue;
-            long childSum = dfs(child.get(i));
-            node[cur] += childSum;
-            dp[cur] += Math.abs(childSum);
-            dp[cur] += dp[child.get(i)];
+            int next = child.get(i);
+            if(visited[next]) continue;
+            dfs(next);
+            node[cur] += node[next];
+            answer += Math.abs(node[next]);
         }
-        
-        return node[cur];
     }
 }
