@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -14,13 +13,19 @@ class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int h = Integer.parseInt(st.nextToken());
             int o = Integer.parseInt(st.nextToken());
-            arr[i][0] = Math.min(h, o);
-            arr[i][1] = Math.max(h, o);
+            if (h > o) {
+                arr[i][0] = o;
+                arr[i][1] = h;
+            } else {
+                arr[i][0] = h;
+                arr[i][1] = o;
+
+            } 
         }
 
         int d = Integer.parseInt(br.readLine());
 
-        Arrays.sort(arr, Comparator.comparingInt(a -> a[1]));
+        Arrays.sort(arr, (a, b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         int max = 0;
 
