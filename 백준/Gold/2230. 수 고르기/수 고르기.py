@@ -1,22 +1,12 @@
 import sys
+
 input = sys.stdin.readline
 
-def lowerBound(arr, left, right, k):
-    v = arr[left - 1]
-
-    while left <= right:
-        mid = (left + right) >> 1
-        if arr[mid] - v >= k:
-            right = mid - 1
-        else:
-            left = mid + 1
-
-    if(left >= len(arr)):
-        return 2000000001
-    return arr[left] - v
-
-
 N, M = map(int, input().split())
+
+if M == 0:
+    print(0)
+    sys.exit(0)
 
 arr = []
 for _ in range(N):
@@ -24,9 +14,15 @@ for _ in range(N):
 
 arr.sort()
 
+l,r = 0, 0
 result = 2000000001
 
-for i in range(len(arr) - 1):
-    result = min(result, lowerBound(arr, i + 1, len(arr) - 1, M))
+while r < len(arr):
+    diff = arr[r] - arr[l]
+    if diff >= M:
+        result = min(result, diff)
+        l += 1
+    else:
+        r += 1
 
 print(result)
