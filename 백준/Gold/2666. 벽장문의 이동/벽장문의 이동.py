@@ -1,24 +1,25 @@
 import sys
-
 input = sys.stdin.readline
+
+nums = []
 N = int(input())
 l, r = map(int, input().split())
 M = int(input())
+for _ in range(M):
+    nums.append(int(input()) - 1)
+dp = [[[-1 for _ in range(N)] for _ in range(N)] for _ in range(M + 1)]
 
-dp = [[[1000 for _ in range(N)] for _ in range(N)] for _ in range(M + 1)]
-dp[0][l - 1][r - 1] = 0
+def rec(left, right, idx):
+    if idx == M:
+        return 0
 
-for k in range(M):
-    m = int(input()) - 1
-    for i in range(N):
-        for j in range(N):
-            dp[k + 1][m][j] = min(dp[k + 1][m][j], dp[k][i][j] + abs(i - m))
-            dp[k + 1][i][m] = min(dp[k + 1][i][m], dp[k][i][j] + abs(j - m))
+    m = nums[idx]
 
-answer = 1000
+    if dp[idx][left][right] != -1:
+        return dp[idx][left][right]
 
-for i in range(N):
-    for j in range(N):
-        answer = min(answer, dp[M][i][j])
+    dp[idx][left][right] = min(abs(left - m) + rec(m, right, idx + 1), abs(right - m) + rec(left, m, idx + 1))
+    return dp[idx][left][right]
 
-print(answer)
+
+print(rec(l - 1, r - 1, 0))
