@@ -2,20 +2,14 @@ import sys
 input = sys.stdin.readline
 T = int(input())
 k = int(input())
-p = []
-n = []
-for _ in range(k):
-    pi, ni = map(int, input().split())
-    p.append(pi)
-    n.append(ni)
-
 dp = [0 for _ in range(T + 1)]
 dp[0] = 1
 
 for i in range(k):
+    p, n = map(int, input().split())
     for j in range(T, -1, -1):
-        for l in range(1, n[i] + 1):
-            if j >= l * p[i]:
-                dp[j] += dp[j - l * p[i]]
+        for l in range(1, n + 1):
+            if j >= l * p:
+                dp[j] += dp[j - l * p]
 
-print(dp[T])
+print(dp[-1])
