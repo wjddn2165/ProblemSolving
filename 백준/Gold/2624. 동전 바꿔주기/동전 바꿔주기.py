@@ -5,13 +5,12 @@ k = int(input())
 dp = [0 for _ in range(T + 1)]
 dp[0] = 1
 
-for i in range(k):
+for _ in range(k):
     p, n = map(int, input().split())
-    for j in range(T, -1, -1):
-        for l in range(1, n + 1):
-            if l * p > T:
-                break
-            if j >= l * p:
-                dp[j] += dp[j - l * p]
-
+    temp = dp[:]
+    for i in range(1, n + 1):
+        if p * i > T:
+            break
+        for j in range(p * i, T + 1):
+            dp[j] += temp[j - p * i]
 print(dp[-1])
