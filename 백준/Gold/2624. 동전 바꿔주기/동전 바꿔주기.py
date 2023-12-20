@@ -9,6 +9,8 @@ for i in range(k):
     p, n = map(int, input().split())
     for j in range(T, -1, -1):
         for l in range(1, n + 1):
+            if l * p > T:
+                break
             if j >= l * p:
                 dp[j] += dp[j - l * p]
 
