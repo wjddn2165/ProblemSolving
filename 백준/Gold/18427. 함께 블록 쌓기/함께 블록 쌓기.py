@@ -10,6 +10,5 @@ for _ in range(N):
     for h_i in h:
         for i in range(h_i, H + 1):
             dp[i] += temp[i - h_i]
-            dp[i] %= 10007
         
-print(dp[H])
+print(dp[-1] % 10007)
