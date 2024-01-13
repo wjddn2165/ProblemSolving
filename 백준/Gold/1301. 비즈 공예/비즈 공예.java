@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 public class Main {
 
@@ -19,19 +18,6 @@ public class Main {
         }
 
         dp = new long[N + 1][N + 1][11][11][11][11][11];
-        for (int i = 0; i <= N; i++) {
-            for (int j = 0; j <= N; j++) {
-                for (int k = 0; k < 11; k++) {
-                    for (int l = 0; l < 11; l++) {
-                        for (int o = 0; o < 11; o++) {
-                            for (int p = 0; p < 11; p++) {
-                                Arrays.fill(dp[i][j][k][l][o][p], -1);
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         System.out.println(dfs(0, 0, count[0], count[1], count[2], count[3], count[4]));
     }
@@ -41,8 +27,8 @@ public class Main {
             return 1;
         }
 
-        if (dp[prev2][prev][c1][c2][c3][c4][c5] != -1) {
-            return dp[prev2][prev][c1][c2][c3][c4][c5];
+        if (dp[prev2][prev][c1][c2][c3][c4][c5] != 0) {
+            return Math.max(dp[prev2][prev][c1][c2][c3][c4][c5], 0);
         }
 
         dp[prev2][prev][c1][c2][c3][c4][c5] = 0;
@@ -65,6 +51,11 @@ public class Main {
             if (i == 3) sum += dfs(prev, 3, c1, c2, c3 - 1, c4, c5);
             if (i == 4) sum += dfs(prev, 4, c1, c2, c3, c4 - 1, c5);
             if (i == 5) sum += dfs(prev, 5, c1, c2, c3, c4, c5 - 1);
+        }
+
+        if (sum == 0) {
+            dp[prev2][prev][c1][c2][c3][c4][c5] = -1;
+            return 0;
         }
 
         return dp[prev2][prev][c1][c2][c3][c4][c5] = sum;
