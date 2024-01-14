@@ -8,7 +8,7 @@ def dfs(cur, idx, temperature, t1, t2, cost, onboard, dp):
         return 0
     
     if onboard[idx] == 1 and (cur < t1 or cur > t2):
-        return INF + 1
+        return INF  + 1
     
     if cur < 0 or cur > 50:
         return INF + 1
