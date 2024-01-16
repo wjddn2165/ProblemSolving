@@ -19,7 +19,7 @@ def decide(time, a, b, g, s, w, t):
     
 def solution(a, b, g, s, w, t):
     lo = 0
-    hi = 10**15
+    hi = 2 * 10**9 * 2 * 10**5
     
     while lo <= hi:
         mid = (lo + hi) >> 1
