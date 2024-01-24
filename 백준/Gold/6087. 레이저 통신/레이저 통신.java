@@ -15,12 +15,10 @@ class Main {
         int H = Integer.parseInt(st.nextToken());
 
         PriorityQueue<Node> queue = new PriorityQueue<>();
-        int[][][] dist = new int[H][W][5];
+        int[][] dist = new int[H][W];
 
         for (int i = 0; i < H; i++) {
-            for (int j = 0; j < W; j++) {
-                Arrays.fill(dist[i][j], INF);
-            }
+            Arrays.fill(dist[i], INF);
         }
 
         int[][] board = new int[H][W];
@@ -34,10 +32,7 @@ class Main {
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < W; j++) {
                 if (board[i][j] == 'C' && queue.isEmpty()) {
-                    for (int k = 0; k < 5; k++) {
-                        dist[i][j][k] = -1;
-                    }
-
+                    dist[i][j] = -1;
                     queue.offer(new Node(i, j, 4, -1));
                 }
             }
@@ -48,14 +43,12 @@ class Main {
         while (!queue.isEmpty()) {
             Node cur = queue.remove();
 
-            if (cur.count > dist[cur.r][cur.c][cur.dir]) {
+            if (cur.count > dist[cur.r][cur.c]) {
                 continue;
             }
 
-            if (board[cur.r][cur.c] == 'C' && dist[cur.r][cur.c][cur.dir] != -1) {
-//                System.out.println(Arrays.toString(dist[cur.r][cur.c]));
-//                System.out.println(cur.r + " " + cur.c + " " + cur.dir);
-                answer = Math.min(answer, cur.count);
+            if (board[cur.r][cur.c] == 'C' && dist[cur.r][cur.c] != -1) {
+                answer = Math.min(answer, dist[cur.r][cur.c]);
             }
 
             for (int i = 0; i < 4; i++) {
@@ -71,13 +64,13 @@ class Main {
                 }
 
                 if (i == cur.dir) {
-                    if (dist[nr][nc][cur.dir] >= cur.count) {
-                        dist[nr][nc][cur.dir] = cur.count;
+                    if (dist[nr][nc] >= cur.count) {
+                        dist[nr][nc] = cur.count;
                         queue.offer(new Node(nr, nc, i, cur.count));
                     }
                 } else {
-                    if (dist[nr][nc][cur.dir] > cur.count + 1) {
-                        dist[nr][nc][cur.dir] = cur.count + 1;
+                    if (dist[nr][nc] > cur.count + 1) {
+                        dist[nr][nc] = cur.count + 1;
                         queue.offer(new Node(nr, nc, i, cur.count + 1));
                     }
                 }
