@@ -14,7 +14,7 @@ class Main {
         int W = Integer.parseInt(st.nextToken());
         int H = Integer.parseInt(st.nextToken());
 
-        PriorityQueue<Node> queue = new PriorityQueue<>();
+        Deque<Node> queue = new ArrayDeque<>();
         int[][] dist = new int[H][W];
 
         for (int i = 0; i < H; i++) {
@@ -38,17 +38,12 @@ class Main {
             }
         }
 
-        int answer = INF;
-
         while (!queue.isEmpty()) {
             Node cur = queue.remove();
 
-            if (cur.count > dist[cur.r][cur.c]) {
-                continue;
-            }
-
             if (board[cur.r][cur.c] == 'C' && dist[cur.r][cur.c] != -1) {
-                answer = Math.min(answer, dist[cur.r][cur.c]);
+                System.out.println(cur.count);
+                return;
             }
 
             for (int i = 0; i < 4; i++) {
@@ -66,22 +61,20 @@ class Main {
                 if (i == cur.dir) {
                     if (dist[nr][nc] >= cur.count) {
                         dist[nr][nc] = cur.count;
-                        queue.offer(new Node(nr, nc, i, cur.count));
+                        queue.offerFirst(new Node(nr, nc, i, cur.count));
                     }
                 } else {
                     if (dist[nr][nc] > cur.count + 1) {
                         dist[nr][nc] = cur.count + 1;
-                        queue.offer(new Node(nr, nc, i, cur.count + 1));
+                        queue.offerLast(new Node(nr, nc, i, cur.count + 1));
                     }
                 }
             }
         }
-
-        System.out.println(answer);
     }
 }
 
-class Node implements Comparable<Node> {
+class Node {
     int r, c, dir, count;
 
     Node(int r, int c, int dir, int count) {
@@ -89,10 +82,5 @@ class Node implements Comparable<Node> {
         this.c = c;
         this.dir = dir;
         this.count = count;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        return count - o.count;
     }
 }
