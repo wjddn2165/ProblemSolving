@@ -22,5 +22,6 @@ def dfs(strs, t, idx, dp):
             
 def solution(strs, t):
     dp = [INF] * len(t)
+    strs = set(strs)
     answer = dfs(strs, t, 0, dp)
     return -1 if answer == INF + 1 else answer
