@@ -32,8 +32,12 @@ public class Main {
     }
 
     static long dfs(int idx, int count, int bit) {
-        if (count == 11 && bit == (1 << 4) - 1) {
-            return 0;
+        if (count == 11) {
+            if (bit == (1 << 4) - 1) {
+                return 0;
+            }
+
+            return Long.MIN_VALUE;
         }
 
         if (idx == N) {
