@@ -16,14 +16,16 @@ def solution():
         left = 0
         right = n - 1
         count = 0
-        diff = int(1e9)
+        min_diff = int(1e9)
 
         while left < right:
             total = arr[left] + arr[right]
-            if diff > abs(k - total):
-                diff = abs(k - total)
+            diff = abs(k - total)
+
+            if min_diff > diff:
+                min_diff = diff
                 count = 1
-            elif diff == abs(k - total):
+            elif min_diff == diff:
                 count += 1
 
             if total >= k:
