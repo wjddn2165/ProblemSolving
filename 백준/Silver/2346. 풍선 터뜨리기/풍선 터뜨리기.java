@@ -22,7 +22,7 @@ class Main {
 
             int listSize = list.size();
 
-            if (listSize == 0) {
+            if (listSize == 1) {
                 break;
             }
 
@@ -35,14 +35,11 @@ class Main {
             }
 
             curIdx += nextMove;
-
-            while (curIdx < 0) {
-                curIdx += listSize;
-            }
-
+            curIdx += listSize * 1000;
             curIdx %= listSize;
         }
-
+        
+        answer.append(list.get(0).idx);
         System.out.println(answer);
     }
 }
